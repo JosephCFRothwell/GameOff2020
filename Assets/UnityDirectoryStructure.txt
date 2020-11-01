@@ -1,0 +1,23 @@
+Project initialisation directory structure:
+
+- 3rd-Party
+- Audio
+    - Music
+    - SFX
+- Graphics
+    - Animations
+    - Textures
+    - Sprites
+    - Fonts
+- Licences
+- Plugins
+- Prefabs
+- Resources
+- Testing-Sandbox
+- Scenes
+    - Levels
+    - Other
+- Scripts
+
+Don't store files in the root, and try not to make new directories in root if possible,
+put new directories in sub directories.

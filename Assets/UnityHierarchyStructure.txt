@@ -1,0 +1,19 @@
+Project initialisation hierarchy structure:
+
+- Managers
+- UI
+- Cameras
+- Lighting
+- World
+    - Scenery
+    - Props
+- _Runtime
+
+Put all of these at 0,0,0 with default rotation and scale
+When instantiating at runtime, put into _Runtime, not into others
+For empty objects that are solely containers for scripts, use @ as a prefix, 
+    EXCEPT for managers/controllers
+
+
+    Use Manager_Control as the container for the top-level script which contains
+    public variables other scripts rely on
