@@ -53,8 +53,11 @@
      <Compile Include="Assets\Scripts\Managers\ManagerIO.cs" />
      <Compile Include="Assets\Scripts\Managers\ManagerAudio.cs" />
      <None Include="Assets\ReferenceMaterial\WhatIsMoonshotThinking.txt" />
+     <None Include="Assets\ReferenceMaterial\UnderstandingMoonshotThinking.txt" />
+     <None Include="Assets\ReferenceMaterial\HowToApproachThis.txt" />
      <None Include="Assets\UnityHierarchyStructure.txt" />
      <None Include="Assets\UnityDirectoryStructure.txt" />
+     <None Include="Assets\ReferenceMaterial\Ideas.txt" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Users/rothux/Documents/Development/GameOff2020/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
