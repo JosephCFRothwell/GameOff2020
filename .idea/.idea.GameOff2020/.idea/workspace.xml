@@ -35,6 +35,8 @@
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerAudio.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerIO.cs" />
       </list>
     </option>
   </component>
@@ -48,7 +50,7 @@
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="ParameterNameHintsOptionsId" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
@@ -79,7 +81,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1604265722541</updated>
-      <workItem from="1604265729860" duration="431000" />
+      <workItem from="1604265729860" duration="1180000" />
+      <workItem from="1604266952820" duration="509000" />
     </task>
     <servers />
   </component>
@@ -110,14 +113,15 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="406" y="177" key="SettingsEditor" timestamp="1604265854370">
+    <state x="406" y="177" key="SettingsEditor" timestamp="1604266914611">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
-    <state x="406" y="177" key="SettingsEditor/0.0.1920.1034@0.0.1920.1034" timestamp="1604265854370" />
+    <state x="406" y="177" key="SettingsEditor/0.0.1920.1034@0.0.1920.1034" timestamp="1604266914611" />
   </component>
 </project>

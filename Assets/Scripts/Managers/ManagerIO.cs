@@ -11,23 +11,25 @@
  */
 #endregion
 
-using System.IO;
 using System;
-using System.Text.RegularExpressions;
 using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class ManagerIO : MonoBehaviour
+namespace Managers
 {
-    #region Class Variables
-    private static GameObject ioManagerObject;
-    private static ManagerIO ioManagerInstance;
-    private string dirPath, logDirPath, audioFilePath, graphicsFilePath, controlFilePath, miscFilePath, logFilePath, logFileName;
-    private string writeText;
-    #endregion
-
-    public static ManagerIO IOMI
+    public class ManagerIO : MonoBehaviour
     {
+        #region Class Variables
+        private static GameObject _ioManagerObject;
+        private static ManagerIO _ioManagerInstance;
+        private string _dirPath, _logDirPath, _audioFilePath, _graphicsFilePath, _controlFilePath, _miscFilePath, _logFilePath, _logFileName;
+        private string _writeText;
+        #endregion
+
+        public static ManagerIO IOMI
+        {
             #region Existence check
             #region Code explanation
             /* 
@@ -37,74 +39,74 @@ public class ManagerIO : MonoBehaviour
              */
             #endregion
             #region Existence check code
-        get
-        {
-            if (ioManagerInstance == null)
+            get
             {
-                ioManagerInstance = FindObjectOfType<ManagerIO>();
-                if (ioManagerInstance == null)
+                if (_ioManagerInstance == null)
                 {
-                    ioManagerInstance = new GameObject("ManagerIO", typeof(ManagerIO)).GetComponent<ManagerIO>();
+                    _ioManagerInstance = FindObjectOfType<ManagerIO>();
+                    if (_ioManagerInstance == null)
+                    {
+                        _ioManagerInstance = new GameObject("ManagerIO", typeof(ManagerIO)).GetComponent<ManagerIO>();
+                    }
                 }
+                #endregion
+                #endregion
+                return _ioManagerInstance;
             }
-            #endregion
-            #endregion
-            return ioManagerInstance;
+
+            set 
+            {
+                _ioManagerInstance = value;
+            }
         }
 
-        set 
+
+        public static void DontDestroyMeOnLoad(GameObject thisObject)
         {
-            ioManagerInstance = value;
+            // This protects this, and objects above it (eg Managers gameobject), from being destroyed on load
+            // This also means don't need to protect other manager classes?
+            Transform parentTransform = thisObject.transform;
+
+            // If this object doesn't have a parent then its the root transform.
+            while (parentTransform.parent != null)
+            {
+                // Keep going up the chain.
+                parentTransform = parentTransform.parent;
+            }
+            GameObject.DontDestroyOnLoad(parentTransform.gameObject);
         }
-    }
 
-
-    public static void DontDestroyMeOnLoad(GameObject thisObject)
-    {
-        // This protects this, and objects above it (eg Managers gameobject), from being destroyed on load
-        // This also means don't need to protect other manager classes?
-        Transform parentTransform = thisObject.transform;
-
-        // If this object doesn't have a parent then its the root transform.
-        while (parentTransform.parent != null)
+        void Awake()
         {
-            // Keep going up the chain.
-            parentTransform = parentTransform.parent;
-        }
-        GameObject.DontDestroyOnLoad(parentTransform.gameObject);
-    }
-
-    void Awake()
-    {
-        #region Instance Protection and Component Setup
-        #region Code explanation
-        /*
+            #region Instance Protection and Component Setup
+            #region Code explanation
+            /*
          * Protect this instance from destruction
          */
-        #endregion
-        #region Instance Protection and Component Setup Code
-        ioManagerObject = this.gameObject;
-        DontDestroyMeOnLoad(ioManagerObject);
-        #endregion
-        #endregion
+            #endregion
+            #region Instance Protection and Component Setup Code
+            _ioManagerObject = this.gameObject;
+            DontDestroyMeOnLoad(_ioManagerObject);
+            #endregion
+            #endregion
 
-        dirPath = Application.dataPath + "/Config/";
-        logDirPath = Application.dataPath + "/Log/";
-        audioFilePath = "AudioConfig.config";
-        graphicsFilePath = "GraphicsConfig.config";
-        controlFilePath = "InputConfig.config";
-        miscFilePath = "MiscConfig.config";
-        logFileName = "Log.txt";
-        logFilePath = logDirPath + logFileName;
-        writeText = null;
-    }
+            _dirPath = Application.dataPath + "/Config/";
+            _logDirPath = Application.dataPath + "/Log/";
+            _audioFilePath = "AudioConfig.config";
+            _graphicsFilePath = "GraphicsConfig.config";
+            _controlFilePath = "InputConfig.config";
+            _miscFilePath = "MiscConfig.config";
+            _logFileName = "Log.txt";
+            _logFilePath = _logDirPath + _logFileName;
+            _writeText = null;
+        }
 
 
-    public void IO_ReadWriteConfigFile(string audio_or_graphics_or_control_or_misc, bool trueForWriteFalseForRead = false)
-    {
-        #region IO ReadWriteConfigFile(str, bool)
-        #region Code Explanation
-        /*
+        public void IO_ReadWriteConfigFile(string audioOrGraphicsOrControlOrMisc, bool trueForWriteFalseForRead = false)
+        {
+            #region IO ReadWriteConfigFile(str, bool)
+            #region Code Explanation
+            /*
          * General method for Config File IO. 
          * 
          * The steps here are labelled in the code with // (#a(i)) except for 2, 3
@@ -131,140 +133,141 @@ public class ManagerIO : MonoBehaviour
          * 10) Write mode code
          *          10a) we just delete the config file and write a new one with writeText
          */
-        #endregion
-        #region Code
+            #endregion
+            #region Code
 
-        string relevantFileName = null;
-        string relevantFullPath = null;
-        writeText = null;
+            string relevantFileName = null;
+            string relevantFullPath = null;
+            _writeText = null;
 
-        // (1)
-        if (audio_or_graphics_or_control_or_misc == "audio")
-        {
-            // (4)
-            relevantFileName = audioFilePath;
-            relevantFullPath = dirPath + relevantFileName;
-
-            // (5) and (5b)
-            string ifMuted = "{" + (ManagerAudio.AMI.savedVolumeMaster * 100);
-            string ifUnmuted = "{" + (ManagerAudio.AMI.maxVolumeMaster * 100);
-            // create a string for the other variables
-            string writeTextBase = "}\n{" + (ManagerAudio.AMI.realMaxVolumeMusic * 100) + "}\n{" + (ManagerAudio.AMI.realMaxVolumeSFX * 100) + "}\n{" + (ManagerAudio.AMI.realMaxVolumeVoice * 100) + "}";
-
-            //if we are muted, prefix writeTextBase with the muted option, and if unmuted then use current master volume version
-            if (ManagerAudio.AMI.audioIsMuted == true)
+            // (1)
+            if (audioOrGraphicsOrControlOrMisc == "audio")
             {
-                writeText = ifMuted + writeTextBase;
+                // (4)
+                relevantFileName = _audioFilePath;
+                relevantFullPath = _dirPath + relevantFileName;
+
+                // (5) and (5b)
+                string ifMuted = "{" + (ManagerAudio.AMI.savedVolumeMaster * 100);
+                string ifUnmuted = "{" + (ManagerAudio.AMI.maxVolumeMaster * 100);
+                // create a string for the other variables
+                string writeTextBase = "}\n{" + (ManagerAudio.AMI.realMaxVolumeMusic * 100) + "}\n{" + (ManagerAudio.AMI.realMaxVolumeSFX * 100) + "}\n{" + (ManagerAudio.AMI.realMaxVolumeVoice * 100) + "}";
+
+                //if we are muted, prefix writeTextBase with the muted option, and if unmuted then use current master volume version
+                if (ManagerAudio.AMI.audioIsMuted)
+                {
+                    _writeText = ifMuted + writeTextBase;
+                }
+                else if (ManagerAudio.AMI.audioIsMuted == false)
+                {
+                    _writeText = ifUnmuted + writeTextBase;
+                }
             }
-            else if (ManagerAudio.AMI.audioIsMuted == false)
+            else if (audioOrGraphicsOrControlOrMisc == "graphics")
             {
-                writeText = ifUnmuted + writeTextBase;
+                relevantFullPath = _graphicsFilePath;
             }
-        }
-        else if (audio_or_graphics_or_control_or_misc == "graphics")
-        {
-            relevantFullPath = graphicsFilePath;
-        }
-        else if (audio_or_graphics_or_control_or_misc == "control")
-        {
-            relevantFullPath = controlFilePath;
-        }
-        else if (audio_or_graphics_or_control_or_misc == "misc")
-        {
-            relevantFullPath = miscFilePath;
-        }
-        else 
-        {   
-            Debug.LogError("Invalid argument in IO_ReadWriteConfigFile() Part A");
-            IO_AppendToLogFile("Invalid argument in IO_ReadWriteConfigFile() Part A");
-            return; 
-        } // (1b)
-
-        // (6)
-        if (!File.Exists(relevantFullPath))
-        {
-            Debug.Log("Err: " + relevantFileName + ": File does not exist, creating new file with current values.");
-            IO_AppendToLogFile("Err: " + relevantFileName + ": File does not exist, creating new file with current values.");
-            Directory.CreateDirectory(dirPath);
-            File.WriteAllText(relevantFullPath, writeText);
-        }
-
-        // (7)
-        if (new FileInfo(relevantFullPath).Length == 0)
-        {
-            Debug.Log("Err: " + relevantFileName + ": File Empty, writing from current values.");
-            File.Delete(relevantFullPath);
-            File.WriteAllText(relevantFullPath, writeText);
-        }
-
-        // (8)
-        // (9)
-        if (trueForWriteFalseForRead == false)      // if in read mode
-        {
-            // (9a)
-            char[] deliminators = { '{', '}', '\n' };
-            string t = File.ReadAllText(relevantFullPath);
-            // (9b)
-            Regex regex = new Regex(@"^[0-9.{}\n]*$");
-            if (!regex.IsMatch(t))
-            {   // (9c)
-                Debug.Log("Err: " + relevantFileName + ": Invalid Character. Writing new from current values.");
-                IO_AppendToLogFile("Err: " + relevantFileName + ": Invalid Character. Writing new from current values.");
-                File.Delete(relevantFullPath);
-                File.WriteAllText(relevantFullPath, writeText);
-                t = File.ReadAllText(relevantFullPath);     // (9c(i))
+            else if (audioOrGraphicsOrControlOrMisc == "control")
+            {
+                relevantFullPath = _controlFilePath;
             }
-
-            // (9d)
-            string[] variablesExtracted = t.Split(deliminators, System.StringSplitOptions.RemoveEmptyEntries);
-
-            // (9e)
-            if (audio_or_graphics_or_control_or_misc == "audio")
-            {   // (9e(i))
-                ManagerAudio.AMI.maxVolumeMaster = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[0]) / 100));
-                ManagerAudio.AMI.realMaxVolumeMusic = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[1]) / 100));
-                ManagerAudio.AMI.realMaxVolumeSFX = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[2]) / 100));
-                ManagerAudio.AMI.realMaxVolumeVoice = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[3]) / 100));
-            }
-            else if (audio_or_graphics_or_control_or_misc == "graphics")
-            {   // what are we reading from graphics?
-            }
-            else if (audio_or_graphics_or_control_or_misc == "control")
-            {   // what are we reading from control?
-            }
-            else if (audio_or_graphics_or_control_or_misc == "misc")
-            {   // what are we reading from misc?
+            else if (audioOrGraphicsOrControlOrMisc == "misc")
+            {
+                relevantFullPath = _miscFilePath;
             }
             else 
+            {   
+                Debug.LogError("Invalid argument in IO_ReadWriteConfigFile() Part A");
+                IO_AppendToLogFile("Invalid argument in IO_ReadWriteConfigFile() Part A");
+                return; 
+            } // (1b)
+
+            // (6)
+            if (!File.Exists(relevantFullPath))
             {
-                IO_AppendToLogFile("Invalid argument in IO_ReadWriteConfigFile() Part B");
-                Debug.LogError("Invalid argument in IO_ReadWriteConfigFile() Part B"); 
-                return; // (9f)
-            } 
-        }
-        // (10)
-        if (trueForWriteFalseForRead == true)       // if in write mode
-        {   // (10a)
-            File.Delete(relevantFullPath);
-            File.WriteAllText(relevantFullPath, writeText);
-        }
-        #endregion
-        #endregion
+                Debug.Log("Err: " + relevantFileName + ": File does not exist, creating new file with current values.");
+                IO_AppendToLogFile("Err: " + relevantFileName + ": File does not exist, creating new file with current values.");
+                Directory.CreateDirectory(_dirPath);
+                File.WriteAllText(relevantFullPath, _writeText);
+            }
 
-    }
+            // (7)
+            if (new FileInfo(relevantFullPath).Length == 0)
+            {
+                Debug.Log("Err: " + relevantFileName + ": File Empty, writing from current values.");
+                File.Delete(relevantFullPath);
+                File.WriteAllText(relevantFullPath, _writeText);
+            }
 
-    public void IO_AppendToLogFile(string outputString)
-    {
-        var datetime = DateTime.Now;
-        string datetimeNormalised = datetime.ToString(CultureInfo.InvariantCulture);
-        if (!File.Exists(logFilePath))
+            // (8)
+            // (9)
+            if (trueForWriteFalseForRead == false)      // if in read mode
+            {
+                // (9a)
+                char[] deliminators = { '{', '}', '\n' };
+                string t = File.ReadAllText(relevantFullPath);
+                // (9b)
+                Regex regex = new Regex(@"^[0-9.{}\n]*$");
+                if (!regex.IsMatch(t))
+                {   // (9c)
+                    Debug.Log("Err: " + relevantFileName + ": Invalid Character. Writing new from current values.");
+                    IO_AppendToLogFile("Err: " + relevantFileName + ": Invalid Character. Writing new from current values.");
+                    File.Delete(relevantFullPath);
+                    File.WriteAllText(relevantFullPath, _writeText);
+                    t = File.ReadAllText(relevantFullPath);     // (9c(i))
+                }
+
+                // (9d)
+                string[] variablesExtracted = t.Split(deliminators, StringSplitOptions.RemoveEmptyEntries);
+
+                // (9e)
+                if (audioOrGraphicsOrControlOrMisc == "audio")
+                {   // (9e(i))
+                    ManagerAudio.AMI.maxVolumeMaster = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[0]) / 100));
+                    ManagerAudio.AMI.realMaxVolumeMusic = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[1]) / 100));
+                    ManagerAudio.AMI.realMaxVolumeSFX = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[2]) / 100));
+                    ManagerAudio.AMI.realMaxVolumeVoice = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[3]) / 100));
+                }
+                else if (audioOrGraphicsOrControlOrMisc == "graphics")
+                {   // what are we reading from graphics?
+                }
+                else if (audioOrGraphicsOrControlOrMisc == "control")
+                {   // what are we reading from control?
+                }
+                else if (audioOrGraphicsOrControlOrMisc == "misc")
+                {   // what are we reading from misc?
+                }
+                else 
+                {
+                    IO_AppendToLogFile("Invalid argument in IO_ReadWriteConfigFile() Part B");
+                    Debug.LogError("Invalid argument in IO_ReadWriteConfigFile() Part B"); 
+                    return; // (9f)
+                } 
+            }
+            // (10)
+            if (trueForWriteFalseForRead)       // if in write mode
+            {   // (10a)
+                File.Delete(relevantFullPath);
+                File.WriteAllText(relevantFullPath, _writeText);
+            }
+            #endregion
+            #endregion
+
+        }
+
+        public void IO_AppendToLogFile(string outputString)
         {
-            Debug.Log("Err: " + logFilePath + ": File does not exist, creating new log file.");
-            Directory.CreateDirectory(logDirPath);
-            File.AppendAllText(logFilePath, "[" + datetimeNormalised + "] " + "Created New Log File" + Environment.NewLine);
+            var datetime = DateTime.Now;
+            string datetimeNormalised = datetime.ToString(CultureInfo.InvariantCulture);
+            if (!File.Exists(_logFilePath))
+            {
+                Debug.Log("Err: " + _logFilePath + ": File does not exist, creating new log file.");
+                Directory.CreateDirectory(_logDirPath);
+                File.AppendAllText(_logFilePath, "[" + datetimeNormalised + "] " + "Created New Log File" + Environment.NewLine);
+            }
+
+            File.AppendAllText(_logFilePath, "[" + datetimeNormalised + "] " + outputString + Environment.NewLine);
+
         }
-
-        File.AppendAllText(logFilePath, "[" + datetimeNormalised + "] " + outputString + Environment.NewLine);
-
     }
 }
