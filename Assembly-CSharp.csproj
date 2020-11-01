@@ -11,7 +11,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>Rothwell</RootNamespace>
     <ProjectGuid>{69fd8402-fe42-adc9-bd90-d5e2820665a7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -52,6 +52,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Managers\ManagerIO.cs" />
      <Compile Include="Assets\Scripts\Managers\ManagerAudio.cs" />
+     <None Include="Assets\ReferenceMaterial\WhatIsMoonshotThinking.txt" />
      <None Include="Assets\UnityHierarchyStructure.txt" />
      <None Include="Assets\UnityDirectoryStructure.txt" />
  <Reference Include="Unity.Timeline.Editor">

@@ -1,0 +1,27 @@
+﻿So I've got an idea done
+
+For it I am gonna need:
+
+- Platforming
+- Cutscenes
+- Looping parallax backgrounds
+- Pixel art
+- animations with that pixel art
+- Time machine (only going backwards)
+- Same "world" but with differences based on era
+- Dialogue system
+- Enemies (two main types, croissantinati and big egg)
+- fight by throwing eggs
+- get health back by eating cooked eggs and bacon
+- lunar landing on the Big Egg at the end
+- Music to play (several tracks needed)
+- subtitle system (if possible do it CC)
+- sfx
+- graphics options
+- save system (tie into ManagerIO)
+- Title screen
+- Credits
+- Pause screen (allows loading and fiddling with options)
+- UI (scales properly for various screen sizes)
+- Linux build, test with ubuntu or something
+- Mac build, if possible test with old laptop

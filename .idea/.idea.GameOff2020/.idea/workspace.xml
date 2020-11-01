@@ -34,9 +34,13 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerAudio.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerIO.cs" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Assets/ReferenceMaterial/UnderstandingMoonshotThinking" />
+        <option value="$PROJECT_DIR$/Assets/ReferenceMaterial/WhatIsMoonshotThinking.txt" />
+        <option value="$PROJECT_DIR$/Assets/ReferenceMaterial/Ideas" />
+        <option value="$PROJECT_DIR$/Assets/ReferenceMaterial/HowToApproachThis" />
       </list>
     </option>
   </component>
@@ -82,7 +86,7 @@
       <option name="presentableId" value="Default" />
       <updated>1604265722541</updated>
       <workItem from="1604265729860" duration="1180000" />
-      <workItem from="1604266952820" duration="509000" />
+      <workItem from="1604266952820" duration="3913000" />
     </task>
     <servers />
   </component>
@@ -119,9 +123,21 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="1155" y="504" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1604270759048">
+      <screen x="0" y="0" width="1920" height="1034" />
+    </state>
+    <state x="1155" y="504" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1034@0.0.1920.1034" timestamp="1604270759048" />
+    <state x="1052" y="434" key="Rider.ProjectTemplateDialog.Size" timestamp="1604267920600">
+      <screen x="0" y="0" width="1920" height="1034" />
+    </state>
+    <state x="1052" y="434" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1034@0.0.1920.1034" timestamp="1604267920600" />
     <state x="406" y="177" key="SettingsEditor" timestamp="1604266914611">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state x="406" y="177" key="SettingsEditor/0.0.1920.1034@0.0.1920.1034" timestamp="1604266914611" />
+    <state x="953" y="0" width="974" height="1041" key="dock-window-1" timestamp="1604271455651">
+      <screen x="0" y="0" width="1920" height="1034" />
+    </state>
+    <state x="953" y="0" width="974" height="1041" key="dock-window-1/0.0.1920.1034@0.0.1920.1034" timestamp="1604271455651" />
   </component>
 </project>
