@@ -14,7 +14,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Managers
+namespace Rothwell.Managers
 {
     public class ManagerAudio : MonoBehaviour
     {
@@ -115,8 +115,7 @@ namespace Managers
 
 
             audioMuteOrPause = "Audio: ";
-            Debug.Log("Audio Mute or Pause variable ready: " + audioMuteOrPause);
-
+            ManagerDebug.DebugMessage($"Audio Mute or Pause variable ready: {audioMuteOrPause}");
 
             ManagerIO.IOMI.IO_ReadWriteConfigFile("audio");  // Read audio config on awake (sets variables)
         }
@@ -199,20 +198,17 @@ namespace Managers
         }
         private void AudioMaster_MuteSet(bool trueIsMuteFalseIsUnmute = true)
         {
-            if (audioIsMuted != trueIsMuteFalseIsUnmute)
+            if (audioIsMuted == trueIsMuteFalseIsUnmute) return;
+            audioIsMuted = trueIsMuteFalseIsUnmute;
+            switch (trueIsMuteFalseIsUnmute)
             {
-                audioIsMuted = trueIsMuteFalseIsUnmute;
-                switch (trueIsMuteFalseIsUnmute)
-                {
-                    case true:
-                        savedVolumeMaster = maxVolumeMaster;
-                        AudioMaster_Volume_SetMaximum(0f);
-
-                        break;
-                    case false:
-                        AudioMaster_Volume_SetMaximum(savedVolumeMaster * 100);
-                        break;
-                }
+                case true:
+                    savedVolumeMaster = maxVolumeMaster;
+                    AudioMaster_Volume_SetMaximum(0f);
+                    break;
+                case false:
+                    AudioMaster_Volume_SetMaximum(savedVolumeMaster * 100);
+                    break;
             }
         }
         #endregion
@@ -271,28 +267,26 @@ namespace Managers
         }
         private void AudioMaster_PauseSet(bool trueIsPauseFalseIsUnpause = true)
         {
-            if (audioIsPaused != trueIsPauseFalseIsUnpause)
+            if (audioIsPaused == trueIsPauseFalseIsUnpause) return;
+            audioIsPaused = trueIsPauseFalseIsUnpause;
+            switch (trueIsPauseFalseIsUnpause)
             {
-                audioIsPaused = trueIsPauseFalseIsUnpause;
-                switch (trueIsPauseFalseIsUnpause)
-                {
-                    case true:
-                        _musicSourceA.Pause();
-                        _musicSourceB.Pause();
-                        _sfxSource.Pause();
-                        _voiceSourceA.Pause();
-                        _voiceSourceB.Pause();
-                        _voiceSourceC.Pause();
-                        break;
-                    case false:
-                        _musicSourceA.UnPause();
-                        _musicSourceB.UnPause();
-                        _sfxSource.UnPause();
-                        _voiceSourceA.UnPause();
-                        _voiceSourceB.UnPause();
-                        _voiceSourceC.UnPause();
-                        break;
-                }
+                case true:
+                    _musicSourceA.Pause();
+                    _musicSourceB.Pause();
+                    _sfxSource.Pause();
+                    _voiceSourceA.Pause();
+                    _voiceSourceB.Pause();
+                    _voiceSourceC.Pause();
+                    break;
+                case false:
+                    _musicSourceA.UnPause();
+                    _musicSourceB.UnPause();
+                    _sfxSource.UnPause();
+                    _voiceSourceA.UnPause();
+                    _voiceSourceB.UnPause();
+                    _voiceSourceC.UnPause();
+                    break;
             }
         }
         #endregion
@@ -340,9 +334,7 @@ namespace Managers
          * Call this method with 'AudioSource activeSource = ActiveSource(side1, side2);'
          */
             #endregion
-            AudioSource currentSource;
-            if (_musicSourceAIsPlaying) { currentSource = musicSourceSide1; }
-            else { currentSource = musicSourceSide2; }
+            AudioSource currentSource = _musicSourceAIsPlaying ? musicSourceSide1 : musicSourceSide2;
             return currentSource;
         }
         public void AudioMusic_Play(AudioClip musicClip, float volumeBetween0And100 = 100)
@@ -488,7 +480,7 @@ namespace Managers
         #endregion
 
         #region voice-specific Methods
-        private AudioSource ActiveVoiceSource(AudioSource voiceSourceSide1, AudioSource voiceSourceSide2, AudioSource voiceSourceSide3)
+        private static AudioSource ActiveVoiceSource(AudioSource voiceSourceSide1, AudioSource voiceSourceSide2, AudioSource voiceSourceSide3)
         {
             #region ActiveVoiceSource method explained
             /* This checks whether side1 source is playing. If yes, return it as the active source

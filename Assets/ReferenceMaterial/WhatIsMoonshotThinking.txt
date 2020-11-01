@@ -7,7 +7,7 @@ https://siddarth.design/moonshot-thinking-dea210807285
 Moonshot Thinking is when we choose a huge problem, and propose to create a radical solution to the 
 problem using disruptive technology. Also, a moonshot aims for a 10x impact on the problems, not 
 just a 10% improvement.
-
+    
 What makes a great Moonshot?
 -Clearly Defined Problem
 -Radical Proposal to fix the problem

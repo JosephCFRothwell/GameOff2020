@@ -52,6 +52,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Managers\ManagerIO.cs" />
      <Compile Include="Assets\Scripts\Managers\ManagerAudio.cs" />
+     <Compile Include="Assets\Scripts\Managers\ManagerDebug.cs" />
      <None Include="Assets\ReferenceMaterial\WhatIsMoonshotThinking.txt" />
      <None Include="Assets\ReferenceMaterial\UnderstandingMoonshotThinking.txt" />
      <None Include="Assets\ReferenceMaterial\HowToApproachThis.txt" />
