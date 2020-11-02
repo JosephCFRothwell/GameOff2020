@@ -27,6 +27,7 @@ namespace Rothwell.Managers
         private static ManagerIO _ioManagerInstance;
         private string _dirPath, _logDirPath, _audioFilePath, _graphicsFilePath, _controlFilePath, _miscFilePath, _logFilePath, _logFileName;
         private string _writeText;
+        private ManagerDebug _managerDebug;
         #endregion
 
         public static ManagerIO IOMI
@@ -84,6 +85,8 @@ namespace Rothwell.Managers
             #region Instance Protection and Component Setup Code
             _ioManagerObject = this.gameObject;
             DontDestroyMeOnLoad(_ioManagerObject);
+            _managerDebug = GameObject.FindWithTag("ManagerDebug").GetComponent<ManagerDebug>();
+            
             #endregion
             #endregion
 
@@ -173,7 +176,7 @@ namespace Rothwell.Managers
                     relevantFullPath = _miscFilePath;
                     break;
                 default:
-                    ManagerDebug.DebugMessage("Err: Invalid argument in IO_ReadWriteConfigFile() Part A");
+                    _managerDebug.DebugMessage("Err: Invalid argument in IO_ReadWriteConfigFile() Part A");
                     IO_AppendToLogFile("Err: Invalid argument in IO_ReadWriteConfigFile() Part A");
                     return; // (1b)
             }
@@ -181,7 +184,7 @@ namespace Rothwell.Managers
             // (6)
             if (!File.Exists(relevantFullPath))
             {
-                ManagerDebug.DebugMessage($"Err: {relevantFileName}: File does not exist, creating new file with current values.");
+                _managerDebug.DebugMessage($"Err: {relevantFileName}: File does not exist, creating new file with current values.");
                 IO_AppendToLogFile($"Err: {relevantFileName}: File does not exist, creating new file with current values.");
                 Directory.CreateDirectory(_dirPath);
                 File.WriteAllText(relevantFullPath, _writeText);
@@ -190,7 +193,7 @@ namespace Rothwell.Managers
             // (7)
             if (new FileInfo(relevantFullPath).Length == 0)
             {
-                ManagerDebug.DebugMessage($"Err: {relevantFileName}: File Empty, writing from current values.");
+                _managerDebug.DebugMessage($"Err: {relevantFileName}: File Empty, writing from current values.");
                 File.Delete(relevantFullPath);
                 File.WriteAllText(relevantFullPath, _writeText);
             }
@@ -206,7 +209,7 @@ namespace Rothwell.Managers
                 Regex regex = new Regex(@"^[0-9.{}\n]*$");
                 if (!regex.IsMatch(t))
                 {   // (9c)
-                    ManagerDebug.DebugMessage($"Err: {relevantFileName}: Invalid Character. Writing new from current values.");
+                    _managerDebug.DebugMessage($"Err: {relevantFileName}: Invalid Character. Writing new from current values.");
                     IO_AppendToLogFile($"Err: {relevantFileName}: Invalid Character. Writing new from current values.");
                     File.Delete(relevantFullPath);
                     File.WriteAllText(relevantFullPath, _writeText);
@@ -233,7 +236,7 @@ namespace Rothwell.Managers
                         break;
                     default:
                         IO_AppendToLogFile("Err: Invalid argument in IO_ReadWriteConfigFile() Part B");
-                        ManagerDebug.DebugMessage("Err: Invalid argument in IO_ReadWriteConfigFile() Part B"); 
+                        _managerDebug.DebugMessage("Err: Invalid argument in IO_ReadWriteConfigFile() Part B"); 
                         return; // (9f)
                 } 
             }
@@ -252,7 +255,7 @@ namespace Rothwell.Managers
             var datetimeNormalised = datetime.ToString(CultureInfo.InvariantCulture);
             if (!File.Exists(_logFilePath))
             {
-                ManagerDebug.DebugMessage($"Err: {_logFilePath}: File does not exist, creating new log file.");
+                _managerDebug.DebugMessage($"Err: {_logFilePath}: File does not exist, creating new log file.");
                 Directory.CreateDirectory(_logDirPath);
                 File.AppendAllText(_logFilePath, $"[{datetimeNormalised}] Created New Log File{Environment.NewLine}");
             }

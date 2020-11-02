@@ -25,6 +25,8 @@ namespace Rothwell.Managers
         private AudioSource _musicSourceA, _musicSourceB, _sfxSource, _voiceSourceA, _voiceSourceB, _voiceSourceC;
         [SerializeField] private float outputMaxVolumeMusic, outputMaxVolumeSFX, outputMaxVolumeVoice;
         private bool _musicSourceAIsPlaying;
+        private ManagerDebug _managerDebug;
+        
         #endregion
 
         /// <DEBUG>
@@ -110,12 +112,14 @@ namespace Rothwell.Managers
             realMaxVolumeMusic = 1;
             realMaxVolumeSFX = 1;
             realMaxVolumeVoice = 1;
+
+            _managerDebug = GameObject.FindWithTag("ManagerDebug").GetComponent<ManagerDebug>();
             #endregion
             #endregion
 
 
             audioMuteOrPause = "Audio: ";
-            ManagerDebug.DebugMessage($"Audio Mute or Pause variable ready: {audioMuteOrPause}");
+            _managerDebug.DebugMessage($"Audio Mute or Pause variable ready: {audioMuteOrPause}");
 
             ManagerIO.IOMI.IO_ReadWriteConfigFile("audio");  // Read audio config on awake (sets variables)
         }

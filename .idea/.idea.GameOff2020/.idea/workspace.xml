@@ -39,9 +39,9 @@
         <option value="$PROJECT_DIR$/Assets/ReferenceMaterial/Ideas" />
         <option value="$PROJECT_DIR$/Assets/ReferenceMaterial/HowToApproachThis" />
         <option value="$PROJECT_DIR$/Assets/ReferenceMaterial/WhatIsMoonshotThinking.txt" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerIO.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerAudio.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerDebug.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerAudio.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerIO.cs" />
       </list>
     </option>
   </component>
@@ -89,6 +89,8 @@
       <workItem from="1604265729860" duration="1180000" />
       <workItem from="1604266952820" duration="3993000" />
       <workItem from="1604272130893" duration="2852000" />
+      <workItem from="1604275080320" duration="442000" />
+      <workItem from="1604275556440" duration="42000" />
     </task>
     <servers />
   </component>

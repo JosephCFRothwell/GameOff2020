@@ -22,17 +22,17 @@ namespace Rothwell.Managers
     {
         #region Class Variables
 
-        public static bool InEditMode;
+        public bool inEditMode;
         #endregion
 
         private void Awake()
         {
-            InEditMode = false;
+            inEditMode = false;
         }
                 
-        public static void DebugMessage(string message)
+        public void DebugMessage(string message)
         {
-            if (!InEditMode) return;
+            if (!inEditMode) return;
             Debug.Log($"ManagerDebug.Message(): {message}");
 
         }
