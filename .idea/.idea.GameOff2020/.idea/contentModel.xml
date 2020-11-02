@@ -19,7 +19,18 @@
           <e p="Managers" t="Include">
             <e p="ManagerAudio.cs" t="Include" />
             <e p="ManagerDebug.cs" t="Include" />
+            <e p="ManagerGameState.cs" t="Include" />
             <e p="ManagerIO.cs" t="Include" />
+          </e>
+          <e p="State" t="Include">
+            <e p="State.cs" t="Include" />
+            <e p="State_Credits.cs" t="Include" />
+            <e p="State_Cutscene.cs" t="Include" />
+            <e p="State_MainMenu.cs" t="Include" />
+            <e p="State_PauseMenu.cs" t="Include" />
+            <e p="State_PlayLander.cs" t="Include" />
+            <e p="State_PlayPlatformer.cs" t="Include" />
+            <e p="StateSearch.cs" t="Include" />
           </e>
         </e>
         <e p="UnityDirectoryStructure.txt" t="Include" />
