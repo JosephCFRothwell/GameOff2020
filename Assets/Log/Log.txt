@@ -1,0 +1,8 @@
+[11/02/2020 11:50:02] Created New Log File
+[11/02/2020 11:50:02] Err: AudioConfig.config: File does not exist, creating new file with current values.
+[11/02/2020 12:00:26] Err: AudioConfig.config: Invalid Character. Writing new from current values.
+[11/02/2020 12:01:28] Err: AudioConfig.config: Invalid Character. Writing new from current values.
+[11/02/2020 12:02:39] Err: AudioConfig.config: Invalid Character. Writing new from current values.
+[11/02/2020 12:15:16] Err: AudioConfig.config: Unexpected length of config file. Writing new from current values.
+[11/02/2020 12:15:53] Err: AudioConfig.config: Unexpected length of config file. Writing new from current values.
+[11/02/2020 12:43:02] Err: AudioConfig.config: File does not exist, creating new file with current values.

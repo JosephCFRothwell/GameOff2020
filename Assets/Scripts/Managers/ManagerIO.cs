@@ -12,6 +12,7 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -20,22 +21,27 @@ using UnityEngine;
 namespace Rothwell.Managers
 {
     [RequireComponent(typeof(ManagerIO))]
+    [SuppressMessage("ReSharper", "Unity.PerformanceCriticalCodeInvocation")]
+    [SuppressMessage("ReSharper", "HeapView.ObjectAllocation.Evident")]
+    [SuppressMessage("ReSharper", "HeapView.ObjectAllocation")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class ManagerIO : MonoBehaviour
     {
         #region Class Variables
         private static GameObject _ioManagerObject;
         private static ManagerIO _ioManagerInstance;
         private string _dirPath, _logDirPath, _audioFilePath, _graphicsFilePath, _controlFilePath, _miscFilePath, _logFilePath, _logFileName;
+        private int _expectedLength;
         private string _writeText;
-        private ManagerDebug _managerDebug;
         #endregion
 
+        [SuppressMessage("ReSharper", "Unity.PerformanceCriticalCodeNullComparison")]
         public static ManagerIO IOMI
         {
             #region Existence check
             #region Code explanation
             /* 
-             * Find the ManagerIO gameobject and set the variable. 
+             * Find the ManagerIO gameObject and set the variable. 
              * If there is no such game object, create one with this script and set variables.
 
              */
@@ -61,7 +67,7 @@ namespace Rothwell.Managers
 
         public static void DontDestroyMeOnLoad(GameObject thisObject)
         {
-            // This protects this, and objects above it (eg Managers gameobject), from being destroyed on load
+            // This protects this, and objects above it (eg Managers gameObject), from being destroyed on load
             // This also means don't need to protect other manager classes?
             Transform parentTransform = thisObject.transform;
 
@@ -71,7 +77,7 @@ namespace Rothwell.Managers
                 // Keep going up the chain.
                 parentTransform = parentTransform.parent;
             }
-            GameObject.DontDestroyOnLoad(parentTransform.gameObject);
+            DontDestroyOnLoad(parentTransform.gameObject);
         }
 
         private void Awake()
@@ -83,25 +89,26 @@ namespace Rothwell.Managers
          */
             #endregion
             #region Instance Protection and Component Setup Code
-            _ioManagerObject = this.gameObject;
+            _ioManagerObject = gameObject;
             DontDestroyMeOnLoad(_ioManagerObject);
-            _managerDebug = GameObject.FindWithTag("ManagerDebug").GetComponent<ManagerDebug>();
-            
+
             #endregion
             #endregion
 
-            _dirPath = Application.dataPath + "/Config/";
-            _logDirPath = Application.dataPath + "/Log/";
+            _dirPath = $"{Application.dataPath}/Config/";
+            _logDirPath = $"{Application.dataPath}/Log/";
             _audioFilePath = "AudioConfig.config";
             _graphicsFilePath = "GraphicsConfig.config";
             _controlFilePath = "InputConfig.config";
             _miscFilePath = "MiscConfig.config";
             _logFileName = "Log.txt";
-            _logFilePath = _logDirPath + _logFileName;
+            _logFilePath = $"{_logDirPath}{_logFileName}";
             _writeText = null;
         }
 
 
+        [SuppressMessage("ReSharper", "HeapView.ObjectAllocation.Evident")]
+        [SuppressMessage("ReSharper", "SuggestVarOrType_SimpleTypes")]
         public void IO_ReadWriteConfigFile(string audioOrGraphicsOrControlOrMisc, bool trueForWriteFalseForRead = false)
         {
             #region IO ReadWriteConfigFile(str, bool)
@@ -148,12 +155,12 @@ namespace Rothwell.Managers
                     // (4)
                     relevantFileName = _audioFilePath;
                     relevantFullPath = $"{_dirPath}{relevantFileName}";
-
+                    _expectedLength = 4;
                     // (5) and (5b)
-                    var ifMuted = "{" + (ManagerAudio.AMI.savedVolumeMaster * 100);
-                    var ifUnmuted = "{" + (ManagerAudio.AMI.maxVolumeMaster * 100);
+                    string ifMuted = "{" + ManagerAudio.AMI.savedVolumeMaster * 100;
+                    string ifUnmuted = "{" + ManagerAudio.AMI.maxVolumeMaster * 100;
                     // create a string for the other variables
-                    var writeTextBase = "}\n{" + (ManagerAudio.AMI.realMaxVolumeMusic * 100) + "}\n{" + (ManagerAudio.AMI.realMaxVolumeSFX * 100) + "}\n{" + (ManagerAudio.AMI.realMaxVolumeVoice * 100) + "}";
+                    string writeTextBase = "}\n{" + ManagerAudio.AMI.realMaxVolumeMusic * 100 + "}\n{" + ManagerAudio.AMI.realMaxVolumeSFX * 100 + "}\n{" + ManagerAudio.AMI.realMaxVolumeVoice * 100 + "}";
 
                     //if we are muted, prefix writeTextBase with the muted option, and if unmuted then use current master volume version
                     if (ManagerAudio.AMI.audioIsMuted)
@@ -168,15 +175,18 @@ namespace Rothwell.Managers
                 }
                 case "graphics":
                     relevantFullPath = _graphicsFilePath;
+                    _expectedLength = 4;
                     break;
                 case "control":
                     relevantFullPath = _controlFilePath;
+                    _expectedLength = 4;
                     break;
                 case "misc":
                     relevantFullPath = _miscFilePath;
+                    _expectedLength = 3;
                     break;
                 default:
-                    _managerDebug.DebugMessage("Err: Invalid argument in IO_ReadWriteConfigFile() Part A");
+                    ManagerDebug.DMI.DebugMessage("Err: Invalid argument in IO_ReadWriteConfigFile() Part A");
                     IO_AppendToLogFile("Err: Invalid argument in IO_ReadWriteConfigFile() Part A");
                     return; // (1b)
             }
@@ -184,7 +194,7 @@ namespace Rothwell.Managers
             // (6)
             if (!File.Exists(relevantFullPath))
             {
-                _managerDebug.DebugMessage($"Err: {relevantFileName}: File does not exist, creating new file with current values.");
+                ManagerDebug.DMI.DebugMessage($"Err: {relevantFileName}: File does not exist, creating new file with current values.");
                 IO_AppendToLogFile($"Err: {relevantFileName}: File does not exist, creating new file with current values.");
                 Directory.CreateDirectory(_dirPath);
                 File.WriteAllText(relevantFullPath, _writeText);
@@ -193,7 +203,7 @@ namespace Rothwell.Managers
             // (7)
             if (new FileInfo(relevantFullPath).Length == 0)
             {
-                _managerDebug.DebugMessage($"Err: {relevantFileName}: File Empty, writing from current values.");
+                ManagerDebug.DMI.DebugMessage($"Err: {relevantFileName}: File Empty, writing from current values.");
                 File.Delete(relevantFullPath);
                 File.WriteAllText(relevantFullPath, _writeText);
             }
@@ -201,15 +211,15 @@ namespace Rothwell.Managers
             // (8)
             // (9)
             var deliminators = new[] { '{', '}', '\n' };
+            Regex regex = new Regex(@"^[0-9.{}\n]*$");
             if (trueForWriteFalseForRead == false)      // if in read mode
             {
                 // (9a)
                 string t = File.ReadAllText(relevantFullPath);
                 // (9b)
-                Regex regex = new Regex(@"^[0-9.{}\n]*$");
                 if (!regex.IsMatch(t))
                 {   // (9c)
-                    _managerDebug.DebugMessage($"Err: {relevantFileName}: Invalid Character. Writing new from current values.");
+                    ManagerDebug.DMI.DebugMessage($"Err: {relevantFileName}: Invalid Character. Writing new from current values.");
                     IO_AppendToLogFile($"Err: {relevantFileName}: Invalid Character. Writing new from current values.");
                     File.Delete(relevantFullPath);
                     File.WriteAllText(relevantFullPath, _writeText);
@@ -218,15 +228,26 @@ namespace Rothwell.Managers
 
                 // (9d)
                 var variablesExtracted = t.Split(deliminators, StringSplitOptions.RemoveEmptyEntries);
-
+                int numberOfElements = variablesExtracted.Length;
+                if (numberOfElements != _expectedLength)
+                {
+                    ManagerDebug.DMI.DebugMessage($"Err: {relevantFileName}: Unexpected length of config file. Writing new from current values.");
+                    IO_AppendToLogFile($"Err: {relevantFileName}: Unexpected length of config file. Writing new from current values.");
+                    File.Delete(relevantFullPath);
+                    File.WriteAllText(relevantFullPath, _writeText);
+                    t = File.ReadAllText(relevantFullPath);
+                    variablesExtracted = t.Split(deliminators, StringSplitOptions.RemoveEmptyEntries);
+                }
+                
+                
                 switch (audioOrGraphicsOrControlOrMisc)
                 {
                     // (9e)
                     case "audio": // (9e(i))
-                        ManagerAudio.AMI.maxVolumeMaster = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[0]) / 100));
-                        ManagerAudio.AMI.realMaxVolumeMusic = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[1]) / 100));
-                        ManagerAudio.AMI.realMaxVolumeSFX = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[2]) / 100));
-                        ManagerAudio.AMI.realMaxVolumeVoice = ManagerAudio.AMI.Audio_Normalise0To100((float.Parse(variablesExtracted[3]) / 100));
+                        ManagerAudio.AMI.maxVolumeMaster = ManagerAudio.Audio_Normalise0To100(float.Parse(variablesExtracted[0]) / 100);
+                        ManagerAudio.AMI.realMaxVolumeMusic = ManagerAudio.Audio_Normalise0To100(float.Parse(variablesExtracted[1]) / 100);
+                        ManagerAudio.AMI.realMaxVolumeSFX = ManagerAudio.Audio_Normalise0To100(float.Parse(variablesExtracted[2]) / 100);
+                        ManagerAudio.AMI.realMaxVolumeVoice = ManagerAudio.Audio_Normalise0To100(float.Parse(variablesExtracted[3]) / 100);
                         break;
                     case "graphics": // what are we reading from graphics?
                         break;
@@ -236,7 +257,7 @@ namespace Rothwell.Managers
                         break;
                     default:
                         IO_AppendToLogFile("Err: Invalid argument in IO_ReadWriteConfigFile() Part B");
-                        _managerDebug.DebugMessage("Err: Invalid argument in IO_ReadWriteConfigFile() Part B"); 
+                        ManagerDebug.DMI.DebugMessage("Err: Invalid argument in IO_ReadWriteConfigFile() Part B"); 
                         return; // (9f)
                 } 
             }
@@ -251,11 +272,11 @@ namespace Rothwell.Managers
 
         public void IO_AppendToLogFile(string outputString)
         {
-            var datetime = DateTime.Now;
+            DateTime datetime = DateTime.Now;
             var datetimeNormalised = datetime.ToString(CultureInfo.InvariantCulture);
             if (!File.Exists(_logFilePath))
             {
-                _managerDebug.DebugMessage($"Err: {_logFilePath}: File does not exist, creating new log file.");
+                ManagerDebug.DMI.DebugMessage($"Err: {_logFilePath}: File does not exist, creating new log file.");
                 Directory.CreateDirectory(_logDirPath);
                 File.AppendAllText(_logFilePath, $"[{datetimeNormalised}] Created New Log File{Environment.NewLine}");
             }

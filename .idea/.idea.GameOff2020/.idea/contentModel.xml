@@ -6,6 +6,9 @@
     <e p="C:\Users\rothux\Documents\Development\GameOff2020" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Log" t="Include">
+          <e p="Log.txt" t="Include" />
+        </e>
         <e p="ReferenceMaterial" t="Include">
           <e p="HowToApproachThis.txt" t="Include" />
           <e p="Ideas.txt" t="Include" />

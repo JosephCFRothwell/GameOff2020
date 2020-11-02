@@ -12,10 +12,13 @@
 #endregion
 
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace Rothwell.Managers
 {
+    [RequireComponent(typeof(ManagerAudio))]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class ManagerAudio : MonoBehaviour
     {
         #region Class Variables
@@ -25,8 +28,7 @@ namespace Rothwell.Managers
         private AudioSource _musicSourceA, _musicSourceB, _sfxSource, _voiceSourceA, _voiceSourceB, _voiceSourceC;
         [SerializeField] private float outputMaxVolumeMusic, outputMaxVolumeSFX, outputMaxVolumeVoice;
         private bool _musicSourceAIsPlaying;
-        private ManagerDebug _managerDebug;
-        
+
         #endregion
 
         /// <DEBUG>
@@ -39,6 +41,10 @@ namespace Rothwell.Managers
 
         private static GameObject _audioManagerObject;
         private static ManagerAudio _audioManagerInstance;
+        [SuppressMessage("ReSharper", "Unity.PerformanceCriticalCodeNullComparison")]
+        [SuppressMessage("ReSharper", "Unity.PerformanceCriticalCodeInvocation")]
+        [SuppressMessage("ReSharper", "HeapView.ObjectAllocation.Evident")]
+        [SuppressMessage("ReSharper", "HeapView.ObjectAllocation")]
         public static ManagerAudio AMI
         {
             get
@@ -46,20 +52,17 @@ namespace Rothwell.Managers
                 #region Existence check
                 #region Code explanation
                 /* 
-             * Find the Manager_Audio gameobject and set the variable. 
+             * Find the Manager_Audio gameObject and set the variable. 
              * If there is no such game object, create one with this script and set variables.
              * If that object does exist but has no Manager_Audio component, create that component on it and set variables.
              */
                 #endregion
                 #region Existence check code
-                if (_audioManagerInstance == null)
-                {
-                    _audioManagerInstance = FindObjectOfType<ManagerAudio>();
-                    if (_audioManagerInstance == null)
-                    {
-                        _audioManagerInstance = new GameObject("Manager_Audio", typeof(ManagerAudio)).GetComponent<ManagerAudio>();
-                    }
-                }
+
+                if (_audioManagerInstance != null) return _audioManagerInstance;
+                _audioManagerInstance = FindObjectOfType<ManagerAudio>();
+                if (_audioManagerInstance != null) return _audioManagerInstance;
+                _audioManagerInstance = new GameObject("Manager_Audio", typeof(ManagerAudio)).GetComponent<ManagerAudio>();
                 #endregion
                 #endregion
                 return _audioManagerInstance;
@@ -73,7 +76,7 @@ namespace Rothwell.Managers
         }
         public static void DontDestroyMeOnLoad(GameObject thisObject)
         {
-            // This protects this, and objects above it (eg Managers gameobject), from being destroyed on load
+            // This protects this, and objects above it (eg Managers gameObject), from being destroyed on load
             // This also means don't need to protect other manager classes?
             Transform parentTransform = thisObject.transform;
 
@@ -83,7 +86,7 @@ namespace Rothwell.Managers
                 // Keep going up the chain.
                 parentTransform = parentTransform.parent;
             }
-            GameObject.DontDestroyOnLoad(parentTransform.gameObject);
+            DontDestroyOnLoad(parentTransform.gameObject);
         }
 
         private void Awake()
@@ -93,11 +96,11 @@ namespace Rothwell.Managers
             /*
          * Protect this instance from destruction
          * Add components to the audio sources
-         * Set musicSources to loop by default, but not the soundeffectsource or voice sources
+         * Set musicSources to loop by default, but not the sfxSource or voice sources
          */
             #endregion
             #region Instance Protection and Component Setup Code
-            _audioManagerObject = this.gameObject;
+            _audioManagerObject = gameObject;
             DontDestroyMeOnLoad(_audioManagerObject);
 
             _musicSourceA = _audioManagerObject.AddComponent<AudioSource>();
@@ -113,13 +116,14 @@ namespace Rothwell.Managers
             realMaxVolumeSFX = 1;
             realMaxVolumeVoice = 1;
 
-            _managerDebug = GameObject.FindWithTag("ManagerDebug").GetComponent<ManagerDebug>();
+
             #endregion
             #endregion
 
-
+            
             audioMuteOrPause = "Audio: ";
-            _managerDebug.DebugMessage($"Audio Mute or Pause variable ready: {audioMuteOrPause}");
+            ManagerDebug.DMI.DebugMessage($"Audio Mute or Pause variable ready: {audioMuteOrPause}");
+            
 
             ManagerIO.IOMI.IO_ReadWriteConfigFile("audio");  // Read audio config on awake (sets variables)
         }
@@ -141,7 +145,7 @@ namespace Rothwell.Managers
         }
 
         #region General and Master Methods
-        public float Audio_Normalise0To100(float input)
+        public static float Audio_Normalise0To100(float input)
         {
             if (input > 100) { input = 100; }
             if (input < 0) { input = 0; }
@@ -166,12 +170,13 @@ namespace Rothwell.Managers
      *  
      *  AudioMaster_MuteSet() by default mutes the audio.
      *  However, it takes optional argument trueIsMuteFalseIsUnmute.
-     *  If true, it mutes 6 audiosources, musics 1 and 2 and the sfx source, and three voice sources.
+     *  If true, it mutes 6 audioSources, musics 1 and 2 and the sfx source, and three voice sources.
      *  It checks whether the muting call is the same as its input, and if not then it takes the action
      *  ^ this step protects against multiple inputs of setting mute state to the same state again
      * 
      */
         #endregion
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void AudioMaster_Mute(bool overrideToggle = false, bool trueIsMuteFalseIsUnmute = true)
         {
             switch (overrideToggle)
@@ -235,12 +240,13 @@ namespace Rothwell.Managers
      *  
      *  AudioMaster_PauseSet() by default pauses the audio.
      *  However, it takes optional argument trueIsPauseFalseIsUnpause.
-     *  If true, it pauses 6 audiosources, musics 1 and 2 and the sfx source, and three voice sources.
+     *  If true, it pauses 6 audioSources, musics 1 and 2 and the sfx source, and three voice sources.
      *  It checks whether the pausing call is the same as its input, and if not then it takes the action
      *  ^ this step protects against multiple inputs of setting pause state to the same state again
      * 
      */
         #endregion
+ 
         public void AudioMaster_Pause(bool overrideToggle = false, bool trueIsPauseFalseIsUnpause = true)
         {
             switch (overrideToggle)
@@ -294,6 +300,7 @@ namespace Rothwell.Managers
             }
         }
         #endregion
+
         public void AudioMaster_Stop()
         {
             AudioMusic_Stop();
@@ -308,9 +315,10 @@ namespace Rothwell.Managers
             newMaxBetween0And100 = Audio_Normalise0To100(newMaxBetween0And100);
             maxVolumeMaster = newMaxBetween0And100 / 100;
         }
+        
         public void AudioMaster_Volume_IncrementMaximum(float incrementAmount = 1)
         {
-            float newMax = Audio_Normalise0To100((maxVolumeMaster * 100) + incrementAmount);
+            float newMax = Audio_Normalise0To100(maxVolumeMaster * 100 + incrementAmount);
             AudioMaster_Volume_SetMaximum(newMax);
         }
         public void Audio_VolumeMax_Update()
@@ -347,7 +355,7 @@ namespace Rothwell.Managers
             AudioSource activeSource = ActiveMusicSource(_musicSourceA, _musicSourceB);
             activeSource.clip = musicClip;
 
-            activeSource.volume = (volumeBetween0And100 / 100) * maxVolumeMaster;
+            activeSource.volume = volumeBetween0And100 / 100 * maxVolumeMaster;
             if (activeSource.volume > outputMaxVolumeMusic)
             {
                 activeSource.volume = outputMaxVolumeMusic;
@@ -370,12 +378,13 @@ namespace Rothwell.Managers
         {
             /* float newMax = Audio_Normalise0To100((maxVolumeMusic * 100) + incrementAmount);
          AudioMusic_Volume_SetMaximum(newMax);*/
-            float newMax = Audio_Normalise0To100((realMaxVolumeMusic * 100) + incrementAmount);
+            float newMax = Audio_Normalise0To100(realMaxVolumeMusic * 100 + incrementAmount);
             AudioMusic_Volume_SetMaximum(newMax);
         }
         #endregion
         #region Fading and Crossfading Methods and Coroutines
         #region Fade Out
+        [SuppressMessage("ReSharper", "HeapView.ObjectAllocation")]
         public void AudioMusic_FadeOut(float transitionTime = 1.0f)
         {
 
@@ -388,7 +397,7 @@ namespace Rothwell.Managers
 
             for (float time = 0; time < transitionTime; time += Time.deltaTime)
             {
-                activeSource.volume = (1 * outputMaxVolumeMusic) - (time / transitionTime);
+                activeSource.volume = 1 * outputMaxVolumeMusic - time / transitionTime;
                 yield return null;
             }
 
@@ -396,6 +405,7 @@ namespace Rothwell.Managers
         }
         #endregion
         #region Fade to New
+        [SuppressMessage("ReSharper", "HeapView.ObjectAllocation")]
         public void AudioMusic_FadeToNew(AudioClip musicClip, float transitionTime = 1.0f)
         {
 
@@ -408,7 +418,7 @@ namespace Rothwell.Managers
 
             for (float time = 0; time < transitionTime; time += Time.deltaTime)
             {
-                activeSource.volume = (1 * outputMaxVolumeMusic) - (time / transitionTime);
+                activeSource.volume = 1 * outputMaxVolumeMusic - time / transitionTime;
                 yield return null;
             }
 
@@ -418,12 +428,13 @@ namespace Rothwell.Managers
 
             for (float time = 0; time < transitionTime; time += Time.deltaTime)
             {
-                activeSource.volume = (time / transitionTime) * outputMaxVolumeMusic;
+                activeSource.volume = time / transitionTime * outputMaxVolumeMusic;
                 yield return null;
             }
         }
         #endregion
         #region Crossfade to New
+        [SuppressMessage("ReSharper", "HeapView.ObjectAllocation")]
         public void AudioMusic_CrossfadeToNew(AudioClip musicClip, float transitionTime = 1.0f)
         {
             AudioSource activeSource = ActiveMusicSource(_musicSourceA, _musicSourceB);
@@ -439,8 +450,8 @@ namespace Rothwell.Managers
         {
             for (float time = 0; time < transitionTime; time += Time.deltaTime)
             {
-                nextSource.volume = (time / transitionTime) * outputMaxVolumeMusic;
-                activeSource.volume = (1 * outputMaxVolumeMusic) - (time / transitionTime);
+                nextSource.volume = time / transitionTime * outputMaxVolumeMusic;
+                activeSource.volume = 1 * outputMaxVolumeMusic - time / transitionTime;
                 yield return null;
             }
 
@@ -455,7 +466,7 @@ namespace Rothwell.Managers
         {
 
             volumeBetween0And100 = Audio_Normalise0To100(volumeBetween0And100);
-            float volume = (volumeBetween0And100 / 100) * maxVolumeMaster;
+            float volume = volumeBetween0And100 / 100 * maxVolumeMaster;
             if (volume > outputMaxVolumeSFX)
             {
                 volume = outputMaxVolumeSFX;
@@ -477,7 +488,7 @@ namespace Rothwell.Managers
         {
             /* float newMax = Audio_Normalise0To100((maxVolumeMusic * 100) + incrementAmount);
          AudioMusic_Volume_SetMaximum(newMax);*/
-            float newMax = Audio_Normalise0To100((realMaxVolumeMusic * 100) + incrementAmount);
+            float newMax = Audio_Normalise0To100(realMaxVolumeMusic * 100 + incrementAmount);
             AudioSFX_Volume_SetMaximum(newMax);
         }
         #endregion
@@ -505,7 +516,7 @@ namespace Rothwell.Managers
             volumeBetween0And100 = Audio_Normalise0To100(volumeBetween0And100);
             AudioSource activeSource = ActiveVoiceSource(_voiceSourceA, _voiceSourceB, _voiceSourceC);
 
-            activeSource.volume = (volumeBetween0And100 / 100) * maxVolumeMaster;
+            activeSource.volume = volumeBetween0And100 / 100 * maxVolumeMaster;
             if (activeSource.volume > outputMaxVolumeVoice)
             {
                 activeSource.volume = outputMaxVolumeVoice;
@@ -530,7 +541,7 @@ namespace Rothwell.Managers
         {
             /* float newMax = Audio_Normalise0To100((maxVolumeMusic * 100) + incrementAmount);
          AudioMusic_Volume_SetMaximum(newMax);*/
-            float newMax = Audio_Normalise0To100((realMaxVolumeVoice * 100) + incrementAmount);
+            float newMax = Audio_Normalise0To100(realMaxVolumeVoice * 100 + incrementAmount);
             AudioMusic_Volume_SetMaximum(newMax);
         }
         #endregion
