@@ -65,13 +65,10 @@
      <Compile Include="Assets\Scripts\State\State_Shutdown.cs" />
      <Compile Include="Assets\Scripts\State\State_PauseMenu.cs" />
      <Compile Include="Assets\Scripts\Managers\ManagerBase.cs" />
-<<<<<<< HEAD
      <Compile Include="Assets\Scripts\Credits\creditsEndMech.cs" />
-=======
-     <Compile Include="Assets\Scripts\State\State_Shutdown.cs" />
->>>>>>> parent of 7c93eb3... Added credits scroll, logo and splash screen
      <None Include="Assets\ReferenceMaterial\WhatIsMoonshotThinking.txt" />
      <None Include="Assets\ReferenceMaterial\UnderstandingMoonshotThinking.txt" />
+     <None Include="Assets\Licences\LiberationSans-SIL Open Font License.txt" />
      <None Include="Assets\ReferenceMaterial\HowToApproachThis.txt" />
      <None Include="Assets\UnityHierarchyStructure.txt" />
      <None Include="Assets\Log\Log.txt" />
