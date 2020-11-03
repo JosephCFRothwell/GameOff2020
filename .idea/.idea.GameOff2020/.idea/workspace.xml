@@ -51,18 +51,18 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerBase.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerAudio.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerDebug.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerIO.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/StateSearch.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/State/State_Shutdown.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_Cutscene.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_MainMenu.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_PauseMenu.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/State/State_Credits.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerGameState.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Credits/CreditsScrollText.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Credits/creditsEndMech.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_PlayLander.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_PlayPlatformer.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/State/State_Shutdown.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerIO.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Credits/CreditsScrollText.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Credits/creditsEndMech.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/State/State_Credits.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerGameState.cs" />
       </list>
     </option>
   </component>
@@ -116,8 +116,7 @@
       <workItem from="1604356268059" duration="2260000" />
       <workItem from="1604396882263" duration="4074000" />
       <workItem from="1604409207042" duration="3585000" />
-      <workItem from="1604415341879" duration="3286000" />
-      <workItem from="1604431699485" duration="2026000" />
+      <workItem from="1604415341879" duration="2691000" />
     </task>
     <servers />
   </component>
@@ -166,10 +165,10 @@
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state x="653" y="169" key="SettingsEditor/0.0.1920.1034@0.0.1920.1034" timestamp="1604322268906" />
-    <state x="953" y="0" width="974" height="1041" key="dock-window-1" timestamp="1604433697640">
+    <state x="953" y="0" width="974" height="1041" key="dock-window-1" timestamp="1604410702518">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
-    <state x="953" y="0" width="974" height="1041" key="dock-window-1/0.0.1920.1034@0.0.1920.1034" timestamp="1604433697640" />
+    <state x="953" y="0" width="974" height="1041" key="dock-window-1/0.0.1920.1034@0.0.1920.1034" timestamp="1604410702518" />
     <state x="953" y="0" width="974" height="1041" key="dock-window-2" timestamp="1604411619436">
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
