@@ -18,6 +18,7 @@
         <e p="Scripts" t="Include">
           <e p="Managers" t="Include">
             <e p="ManagerAudio.cs" t="Include" />
+            <e p="ManagerBase.cs" t="Include" />
             <e p="ManagerDebug.cs" t="Include" />
             <e p="ManagerGameState.cs" t="Include" />
             <e p="ManagerIO.cs" t="Include" />
@@ -30,6 +31,7 @@
             <e p="State_PauseMenu.cs" t="Include" />
             <e p="State_PlayLander.cs" t="Include" />
             <e p="State_PlayPlatformer.cs" t="Include" />
+            <e p="State_Shutdown.cs" t="Include" />
             <e p="StateSearch.cs" t="Include" />
           </e>
         </e>

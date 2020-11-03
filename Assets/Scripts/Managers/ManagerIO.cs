@@ -90,20 +90,33 @@ namespace Rothwell.Managers
             #endregion
             #region Instance Protection and Component Setup Code
             _ioManagerObject = gameObject;
-            DontDestroyMeOnLoad(_ioManagerObject);
+            
+            
+            if (_ioManagerInstance == null)
+            {
+                _ioManagerInstance = this;
+                DontDestroyMeOnLoad(_ioManagerObject);
+                _dirPath = $"{Application.dataPath}/Config/";
+                _logDirPath = $"{Application.dataPath}/Log/";
+                _audioFilePath = "AudioConfig.config";
+                _graphicsFilePath = "GraphicsConfig.config";
+                _controlFilePath = "InputConfig.config";
+                _miscFilePath = "MiscConfig.config";
+                _logFileName = "Log.txt";
+                _logFilePath = $"{_logDirPath}{_logFileName}";
+                _writeText = null;
+            }
+            else
+            {
+                DestroyImmediate(gameObject);
+            }
+            
+
 
             #endregion
             #endregion
 
-            _dirPath = $"{Application.dataPath}/Config/";
-            _logDirPath = $"{Application.dataPath}/Log/";
-            _audioFilePath = "AudioConfig.config";
-            _graphicsFilePath = "GraphicsConfig.config";
-            _controlFilePath = "InputConfig.config";
-            _miscFilePath = "MiscConfig.config";
-            _logFileName = "Log.txt";
-            _logFilePath = $"{_logDirPath}{_logFileName}";
-            _writeText = null;
+
         }
 
 

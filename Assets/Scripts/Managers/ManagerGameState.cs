@@ -13,15 +13,16 @@
 
 #endregion
 
+
 using System.Diagnostics.CodeAnalysis;
+using Rothwell.State;
 using UnityEngine;
 
 namespace Rothwell.Managers
 {
     public class ManagerGameState : MonoBehaviour
     {
-        public string defaultState = "StatePlayPlatformer";
-        public string currentStateName = "";
+        public string currentStateName;
 
         private static GameObject _gameStateManagerObject;
         private static ManagerGameState _gameStateManagerInstance;
@@ -61,6 +62,46 @@ namespace Rothwell.Managers
             set { _gameStateManagerInstance = value; }
         }
 
+        private IGameState _currentState;
+
+        
+        public static void DontDestroyMeOnLoad(GameObject thisObject)
+        {
+            // This protects this, and objects above it (eg Managers gameObject), from being destroyed on load
+            // This also means don't need to protect other manager classes?
+            
+            
+            
+            Transform parentTransform = thisObject.transform;
+
+            // If this object doesn't have a parent then its the root transform.
+            while (parentTransform.parent != null)
+            {
+                // Keep going up the chain.
+                parentTransform = parentTransform.parent;
+            }
+            
+            
+            
+            DontDestroyOnLoad(parentTransform.gameObject);
+        }
+        private void Awake()
+        {
+
+
+            _gameStateManagerObject = gameObject;
+
+
+            if (_gameStateManagerInstance == null)
+            {
+                _gameStateManagerInstance = this;
+                DontDestroyMeOnLoad(_gameStateManagerObject);
+            }
+            else
+            {
+                DestroyImmediate(gameObject);
+            }
+        }
 
     }
 }

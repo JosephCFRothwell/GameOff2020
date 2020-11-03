@@ -4,7 +4,7 @@
     {
         public IGameState DoState(StateSearch state)
         {
-
+            //when credits are done, return state.MainMenuState;
 
             return state.CreditsState;
         }

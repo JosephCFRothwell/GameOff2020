@@ -7,16 +7,18 @@ namespace Rothwell.State
     {
         private IGameState _currentState;
         
+        
         public readonly StateMainMenu MainMenuState = new StateMainMenu();
         public readonly StatePauseMenu PauseMenuState = new StatePauseMenu();
         public readonly StateCredits CreditsState = new StateCredits();
         public readonly StatePlayPlatformer PlayPlatformerState = new StatePlayPlatformer();
         public readonly StatePlayLander PlayLanderState = new StatePlayLander();
         public readonly StateCutscene CutsceneState = new StateCutscene();
+        public readonly StateShutdown ShutdownState = new StateShutdown();
 
         private void OnEnable()
         {
-            ManagerGameState.GSMI.currentStateName = ManagerGameState.GSMI.defaultState;
+            _currentState = PlayPlatformerState;
         }
 
         private void Update()

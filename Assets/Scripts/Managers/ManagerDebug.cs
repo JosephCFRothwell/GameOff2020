@@ -14,8 +14,10 @@
 //using System.Collections;
 //using System.Collections.Generic;
 //using UnityEngine.UI;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Rothwell.Managers
 {
@@ -65,7 +67,43 @@ namespace Rothwell.Managers
             }
         }
 
+        public static void DontDestroyMeOnLoad(GameObject thisObject)
+        {
+            // This protects this, and objects above it (eg Managers gameObject), from being destroyed on load
+            // This also means don't need to protect other manager classes?
+            
+            
+            
+            Transform parentTransform = thisObject.transform;
 
+            // If this object doesn't have a parent then its the root transform.
+            while (parentTransform.parent != null)
+            {
+                // Keep going up the chain.
+                parentTransform = parentTransform.parent;
+            }
+            
+            
+            
+            DontDestroyOnLoad(parentTransform.gameObject);
+        }
+        private void Awake()
+        {
+
+
+            _debugManagerObject = gameObject;
+
+
+            if (_debugManagerInstance == null)
+            {
+                _debugManagerInstance = this;
+                DontDestroyMeOnLoad(_debugManagerObject);
+            }
+            else
+            {
+                DestroyImmediate(gameObject);
+            }
+        }
 
         private void Update()
         {
@@ -94,7 +132,36 @@ namespace Rothwell.Managers
             {
                 ManagerIO.IOMI.IO_ReadWriteConfigFile("audio");
             }
+
+
+       
         }
+
+        
+        
+        
+        
+        public void DebugLoadAsyncScene(string sceneName)
+        {
+            //This really needs some error handling for the sceneName string
+
+            StartCoroutine(DebugLoadAsyncScene_Co(sceneName));
+
+        }
+        
+        public IEnumerator DebugLoadAsyncScene_Co(string sceneName)
+        {
+            //This really needs some error handling for the sceneName string
+
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+            while (!asyncLoad.isDone)
+            {
+                yield return null;
+            }
+        }
+        
+        
         
 
         //Example region zone

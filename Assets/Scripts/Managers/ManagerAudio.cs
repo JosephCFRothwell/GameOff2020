@@ -59,6 +59,7 @@ namespace Rothwell.Managers
                 #endregion
                 #region Existence check code
 
+
                 if (_audioManagerInstance != null) return _audioManagerInstance;
                 _audioManagerInstance = FindObjectOfType<ManagerAudio>();
                 if (_audioManagerInstance != null) return _audioManagerInstance;
@@ -67,17 +68,20 @@ namespace Rothwell.Managers
                 #endregion
                 return _audioManagerInstance;
             }
-/*
+
             private set
             {
                 _audioManagerInstance = value;
             }
-*/
+
         }
         public static void DontDestroyMeOnLoad(GameObject thisObject)
         {
             // This protects this, and objects above it (eg Managers gameObject), from being destroyed on load
             // This also means don't need to protect other manager classes?
+            
+            
+            
             Transform parentTransform = thisObject.transform;
 
             // If this object doesn't have a parent then its the root transform.
@@ -86,6 +90,9 @@ namespace Rothwell.Managers
                 // Keep going up the chain.
                 parentTransform = parentTransform.parent;
             }
+            
+            
+            
             DontDestroyOnLoad(parentTransform.gameObject);
         }
 
@@ -101,31 +108,51 @@ namespace Rothwell.Managers
             #endregion
             #region Instance Protection and Component Setup Code
             _audioManagerObject = gameObject;
-            DontDestroyMeOnLoad(_audioManagerObject);
 
-            _musicSourceA = _audioManagerObject.AddComponent<AudioSource>();
-            _musicSourceA.loop = true;
-            _musicSourceB = _audioManagerObject.AddComponent<AudioSource>();
-            _musicSourceB.loop = true;
-            _sfxSource = _audioManagerObject.AddComponent<AudioSource>();
-            _voiceSourceA = _audioManagerObject.AddComponent<AudioSource>();
-            _voiceSourceB = _audioManagerObject.AddComponent<AudioSource>();
-            _voiceSourceC = _audioManagerObject.AddComponent<AudioSource>();
-            maxVolumeMaster = 1;
-            realMaxVolumeMusic = 1;
-            realMaxVolumeSFX = 1;
-            realMaxVolumeVoice = 1;
+            if (_audioManagerInstance == null)
+            {
+                _audioManagerObject = gameObject;
+                _audioManagerInstance = this;
+                DontDestroyMeOnLoad(_audioManagerObject);
+                _musicSourceA = _audioManagerObject.AddComponent<AudioSource>();
+                _musicSourceA.loop = true;
+                _musicSourceB = _audioManagerObject.AddComponent<AudioSource>();
+                _musicSourceB.loop = true;
+                _sfxSource = _audioManagerObject.AddComponent<AudioSource>();
+                _voiceSourceA = _audioManagerObject.AddComponent<AudioSource>();
+                _voiceSourceB = _audioManagerObject.AddComponent<AudioSource>();
+                _voiceSourceC = _audioManagerObject.AddComponent<AudioSource>();
+                maxVolumeMaster = 1;
+                realMaxVolumeMusic = 1;
+                realMaxVolumeSFX = 1;
+                realMaxVolumeVoice = 1;
+                audioMuteOrPause = "Audio: ";
+                ManagerDebug.DMI.DebugMessage($"Audio Mute or Pause variable ready: {audioMuteOrPause}");
+            
+
+                ManagerIO.IOMI.IO_ReadWriteConfigFile("audio");
+            }
+            else
+            {
+                DestroyImmediate(gameObject);
+            }
+
+
+
+
+            
+
+ 
+            
+            
+
 
 
             #endregion
             #endregion
 
             
-            audioMuteOrPause = "Audio: ";
-            ManagerDebug.DMI.DebugMessage($"Audio Mute or Pause variable ready: {audioMuteOrPause}");
-            
-
-            ManagerIO.IOMI.IO_ReadWriteConfigFile("audio");  // Read audio config on awake (sets variables)
+  // Read audio config on awake (sets variables)
         }
 
         private void Update()
