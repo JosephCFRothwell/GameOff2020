@@ -1,4 +1,6 @@
-﻿namespace Rothwell.State
+﻿using Rothwell.Managers;
+
+namespace Rothwell.State
 {
     public class StateCredits : IGameState
     {
@@ -6,7 +8,11 @@
         {
             //when credits are done, return state.MainMenuState;
 
-            return state.CreditsState;
+            if (ManagerGameState.GSMI.creditsHaveFinished != true) 
+            { return state.CreditsState; }
+            
+            return state.MainMenuState;
+
         }
     }
 }

@@ -31,10 +31,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Credits/CreditsScrollText.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/State/State_Shutdown.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/State/StateSearch.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/State/State.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/State/State_MainMenu.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Credits/creditsEndMech.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -49,16 +51,18 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerBase.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerAudio.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerDebug.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerGameState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerIO.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/StateSearch.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_Shutdown.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/State/State_Credits.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_Cutscene.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_MainMenu.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_PauseMenu.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_PlayLander.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/State/State_PlayPlatformer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Credits/CreditsScrollText.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Credits/creditsEndMech.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/State/State_Credits.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerGameState.cs" />
       </list>
     </option>
   </component>
@@ -112,6 +116,7 @@
       <workItem from="1604356268059" duration="2260000" />
       <workItem from="1604396882263" duration="4074000" />
       <workItem from="1604409207042" duration="3585000" />
+      <workItem from="1604415341879" duration="2691000" />
     </task>
     <servers />
   </component>

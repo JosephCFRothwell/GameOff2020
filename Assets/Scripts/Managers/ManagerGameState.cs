@@ -23,7 +23,9 @@ namespace Rothwell.Managers
     public class ManagerGameState : MonoBehaviour
     {
         public string currentStateName;
-
+        public bool creditsHaveStarted;
+        public bool creditsHaveFinished;
+        
         private static GameObject _gameStateManagerObject;
         private static ManagerGameState _gameStateManagerInstance;
 
