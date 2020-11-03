@@ -30,7 +30,8 @@ namespace Rothwell.Managers
         #region Class Variables
         private static GameObject _ioManagerObject;
         private static ManagerIO _ioManagerInstance;
-        private string _dirPath, _logDirPath, _audioFilePath, _graphicsFilePath, _controlFilePath, _miscFilePath, _logFilePath, _logFileName;
+
+        public string _dirPath, _logDirPath, _audioFilePath, _graphicsFilePath, _controlFilePath, _miscFilePath, _logFilePath, _logFileName;
         private int _expectedLength;
         private string _writeText;
         #endregion
@@ -96,22 +97,25 @@ namespace Rothwell.Managers
             {
                 _ioManagerInstance = this;
                 DontDestroyMeOnLoad(_ioManagerObject);
-                _dirPath = $"{Application.dataPath}/Config/";
-                _logDirPath = $"{Application.dataPath}/Log/";
-                _audioFilePath = "AudioConfig.config";
-                _graphicsFilePath = "GraphicsConfig.config";
-                _controlFilePath = "InputConfig.config";
-                _miscFilePath = "MiscConfig.config";
-                _logFileName = "Log.txt";
-                _logFilePath = $"{_logDirPath}{_logFileName}";
-                _writeText = null;
+
+
             }
             else
             {
+                ManagerDebug.DMI.DebugMessage("we got here");
                 DestroyImmediate(gameObject);
             }
             
-
+            _dirPath = $"{Application.dataPath}/Config/";
+            _logDirPath = $"{Application.dataPath}/Log/";
+            _audioFilePath = "AudioConfig.config";
+            _graphicsFilePath = "GraphicsConfig.config";
+            _controlFilePath = "InputConfig.config";
+            _miscFilePath = "MiscConfig.config";
+            _logFileName = "Log.txt";
+            _logFilePath = $"{_logDirPath}{_logFileName}";
+            _writeText = null;
+            
 
             #endregion
             #endregion
@@ -294,7 +298,7 @@ namespace Rothwell.Managers
                 File.AppendAllText(_logFilePath, $"[{datetimeNormalised}] Created New Log File{Environment.NewLine}");
             }
 
-            File.AppendAllText(_logFilePath, $"[{datetimeNormalised}] {outputString}{Environment.NewLine}");
+            File.AppendAllText(_logFilePath, $"[{datetimeNormalised}]{outputString}{Environment.NewLine}");
 
         }
     }

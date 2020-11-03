@@ -14,41 +14,19 @@
 //using System.Collections;
 //using System.Collections.Generic;
 //using UnityEngine.UI;
-using System;
-using UnityEngine;
-using Rothwell.State;
 using Rothwell.Managers;
+using UnityEngine;
 
-public class creditsEndMech : MonoBehaviour
+namespace Rothwell.Credits
 {
-    #region Class Variables
-    
-    #endregion
+ public class CreditsEndMech : MonoBehaviour
+ {
 
-    void Start()
-    {
-        
-    }
+  private void OnCollisionEnter2D()
+  {
+   ManagerGameState.GSMI.creditsHaveFinished = true;
+  }
 
-    void Update()
-    {
-        
-    }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-     ManagerGameState.GSMI.creditsHaveFinished = true;
-    }
-
-    //Example region zone
-    #region Example region
-    #region Code Explanation
-    /*
-     * Explanation of the code
-     */
-    #endregion
-    #region Example Code
-    // Put code here
-    #endregion
-    #endregion
+ }
 }

@@ -51,6 +51,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Managers\ManagerIO.cs" />
+     <Compile Include="Assets\Scripts\Credits\CreditsScrollText.cs" />
      <Compile Include="Assets\Scripts\State\State_Credits.cs" />
      <Compile Include="Assets\Scripts\State\State_MainMenu.cs" />
      <Compile Include="Assets\Scripts\State\State_PlayLander.cs" />
@@ -61,10 +62,9 @@
      <Compile Include="Assets\Scripts\Managers\ManagerAudio.cs" />
      <Compile Include="Assets\Scripts\Managers\ManagerDebug.cs" />
      <Compile Include="Assets\Scripts\State\State_Cutscene.cs" />
+     <Compile Include="Assets\Scripts\State\State_Shutdown.cs" />
      <Compile Include="Assets\Scripts\State\State_PauseMenu.cs" />
      <Compile Include="Assets\Scripts\Managers\ManagerBase.cs" />
-     <Compile Include="Assets\Scripts\State\State_Shutdown.cs" />
-     <Compile Include="Assets\Scripts\Credits\CreditsScrollText.cs" />
      <Compile Include="Assets\Scripts\Credits\creditsEndMech.cs" />
      <None Include="Assets\ReferenceMaterial\WhatIsMoonshotThinking.txt" />
      <None Include="Assets\ReferenceMaterial\UnderstandingMoonshotThinking.txt" />

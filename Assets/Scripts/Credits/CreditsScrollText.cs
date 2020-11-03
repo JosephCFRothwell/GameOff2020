@@ -16,37 +16,27 @@
 //using UnityEngine.UI;
 using UnityEngine;
 
-public class CreditsScrollText : MonoBehaviour
+namespace Rothwell.Credits
 {
-    private Rigidbody2D rb;
-    #region Class Variables
+    public class CreditsScrollText : MonoBehaviour
+    {
+        private Rigidbody2D _rb;
+        #region Class Variables
     
-    #endregion
+        #endregion
 
-    void Start()
-    {
-        rb = gameObject.GetComponent<Rigidbody2D>();
+        void Start()
+        {
+            _rb = gameObject.GetComponent<Rigidbody2D>();
         
         
-        var velocity = rb.velocity;
-        velocity = new Vector2(velocity.x, velocity.y +1);
-        rb.velocity = velocity;
+            var velocity = _rb.velocity;
+            velocity = new Vector2(velocity.x, velocity.y +1);
+            _rb.velocity = velocity;
+        }
+
+
+
+
     }
-
-    void Update()
-    {
-        
-    }
-
-    //Example region zone
-    #region Example region
-    #region Code Explanation
-    /*
-     * Explanation of the code
-     */
-    #endregion
-    #region Example Code
-    // Put code here
-    #endregion
-    #endregion
 }
